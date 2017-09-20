@@ -76,4 +76,35 @@ class UserController extends BaseController {
         
     }
 
+    //忘记密码
+    public function resetPassword(){
+        $username = I("username");
+        $v_code = I("v_code");
+        if (!$v_code || $v_code != session('v_code')) {
+            //echo $v_code;
+            $this->sendError(10206,$v_code."|".session('v_code'));
+            //$this->sendError(10206,L('verification_code_are_incorrect111'));
+            return;
+        }
+
+        if ( D("User")->isExist($username) ) {
+            $new_uid = D("User")->register($username,$password);
+            if ($new_uid) {
+                //设置自动登录
+                $ret = D("User")->where("uid = '$new_uid' ")->find() ;
+                unset($ret['password']);
+                session("login_user" , $ret );
+                $token = D("UserToken")->createToken($ret['uid']);
+                cookie('cookie_token',$token,60*60*24*90);//此处由服务端控制token是否过期，所以cookies过期时间设置多久都无所谓
+
+              $this->sendResult(array()); 
+
+            }else{
+                $this->sendError(10101,L('username_or_password_incorrect'));
+            }
+        }else{
+            $this->sendError(10101,L('email_does_not_exist'));
+        }
+        
+    }
 }

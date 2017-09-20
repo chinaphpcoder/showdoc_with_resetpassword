@@ -35,10 +35,42 @@ class UserController extends BaseController {
 				    $this->message(L('verification_code_are_incorrect'));
 			  }
 			  
-
 			}
 	}
 
+	public function resetPassword(){
+		if (!IS_POST) {
+			  $this->assign('CloseVerify',C('CloseVerify'));
+			  $this->display ();
+			}else{
+			  $username = I("username");
+			  $password = I("password");
+			  $confirm_password = I("confirm_password");
+			  $v_code = I("v_code");
+			  if (C('CloseVerify') || $v_code && $v_code == session('v_code') ) {
+		  		if ( $password != '' && $password == $confirm_password) {
+
+			  		if ( ! D("User")->isExist($username) ) {
+						$ret = D("User")->register($username,$password);
+						if ($ret) {
+					      $this->message(L('register_succeeded'),U('Home/User/login'));					    
+						}else{
+						  $this->message('register fail');
+						}
+			  		}else{
+			  			$this->message(L('username_exists'));
+			  		}
+
+			  	}else{
+			  		$this->message(L('code_much_the_same'));
+			  	}
+			  }else{
+				    $this->message(L('verification_code_are_incorrect'));
+			  }
+			  
+
+			}
+	}
 
 
 	//登录
