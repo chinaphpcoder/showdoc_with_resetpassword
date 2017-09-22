@@ -13,6 +13,18 @@ class UserModel extends BaseModel {
     }
 
     /**
+     * 用户名是否已经存在
+     * 
+     */
+    public function isExistEMail($email){
+        return  $this->where("email = '%s'",array($email))->find();
+    }
+
+    public function setEmailVerify($email,$cookie_token,$cookie_token_expire){
+        return $this->where("email ='%s' ",array($email))->save(array('cookie_token'=>$cookie_token,'cookie_token_expire'=>$cookie_token_expire));
+    }
+
+    /**
      * 注册新用户
      * 
      */

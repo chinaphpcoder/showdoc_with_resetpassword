@@ -1,0 +1,1 @@
+alter table user add `email_actived` INTEGER DEFAULT 0;

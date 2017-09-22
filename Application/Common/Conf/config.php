@@ -2,6 +2,18 @@
 return array(
     //'配置项'=>'配置值'
     //使用sqlite数据库
+    'SHOW_PAGE_TRACE' => true,
+    'THINK_EMAIL' => array(
+        'SMTP_HOST'   => 'smtp.mxhichina.com', //SMTP服务器
+        'SMTP_PORT'   => '465', //SMTP服务器端口
+        'SMTP_USER'   => 'admin@shaxiaoseng.com', //SMTP服务器用户名
+        'SMTP_PASS'   => 'php@5168', //SMTP服务器密码
+        'FROM_EMAIL'  => 'admin@shaxiaoseng.com', //发件人EMAIL
+        'FROM_NAME'   => '沙小僧', //发件人名称
+        'REPLY_EMAIL' => '', //回复EMAIL（留空则为发件人EMAIL）
+        'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
+        'ENCRYPTION'  => 'ssl',
+    ), 
     'DB_TYPE'   => 'Sqlite', 
     'DB_NAME'   => 'Sqlite/showdoc.db.php', 
     //showdoc不再支持mysql http://www.showdoc.cc/help?page_id=31990

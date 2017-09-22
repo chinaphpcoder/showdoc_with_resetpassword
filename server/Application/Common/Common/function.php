@@ -194,3 +194,32 @@ function http_post($url, $param) {
     curl_close ( $oCurl );
     return $sContent;
 }
+
+
+function sha256($str){
+    $re=hash('sha256', $str, true);
+    return bin2hex($re);
+}
+
+function get_millisecond($mtime=null) {
+    if( 13 == strlen($mtime) ) {
+        return $mtime;
+    } elseif ( strlen($time) == 10 ) {
+        return $time."000";
+    } else {
+        list($t1, $t2) = explode(' ', microtime());
+        return $t2.sprintf("%03d",ceil( ($t1 * 1000)) );
+    }
+}
+
+function get_rand_char($length){
+   $str = null;
+   $strPol = "123456789abcdefghijklmnopqrstuvwxyz";
+   $max = strlen($strPol)-1;
+
+   for($i=0;$i<$length;$i++){
+    $str.=$strPol[rand(0,$max)];//rand($min,$max)生成介于min和max两个数之间的一个随机整数
+   }
+
+   return $str;
+}

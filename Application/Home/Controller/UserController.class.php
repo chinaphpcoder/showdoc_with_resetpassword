@@ -3,6 +3,10 @@ namespace Home\Controller;
 use Think\Controller;
 class UserController extends BaseController {
 
+	public function sendmail(){
+		$status = think_send_mail('xu.shuai@shaxiaoseng.com','徐帅','密码找回测试','这里是内容');
+		var_dump($status);
+	}
 
 	//注册
 	public function register(){
@@ -183,6 +187,101 @@ class UserController extends BaseController {
 					$this->message(L('old_password_incorrect'));
 				}
 
+		}
+	}
+
+	public function updatepwd(){
+		$user = $this->checkLogin();
+		if (!IS_POST) {
+		  $this->assign("user",$user);
+		  $this->display ();
+
+		}else{
+			$username = $user['username'];
+			$password = I("password");
+			$new_password = I("new_password");
+			$ret = D("User")->checkLogin($username,$password);
+			if ($ret) {
+					$ret = D("User")->updatePwd($user['uid'],$new_password);
+					if ($ret) {
+						$this->message(L('modify_succeeded'),U("Home/Item/index"));
+					}else{
+						$this->message(L('modify_faild'));
+
+					}
+
+				}else{	
+					$this->message(L('old_password_incorrect'));
+				}
+
+		}
+	}
+
+	public function updateemail(){
+		$user = $this->checkLogin();
+		if (!IS_POST) {
+		  $this->assign("user",$user);
+		  $this->display ();
+
+		}else{
+			$username = $user['username'];
+			$password = I("password");
+			$new_password = I("new_password");
+			$ret = D("User")->checkLogin($username,$password);
+			if ($ret) {
+					$ret = D("User")->updatePwd($user['uid'],$new_password);
+					if ($ret) {
+						$this->message(L('modify_succeeded'),U("Home/Item/index"));
+					}else{
+						$this->message(L('modify_faild'));
+
+					}
+
+				}else{	
+					$this->message(L('old_password_incorrect'));
+				}
+
+		}
+	}
+
+	public function resetpasswordbyurl(){
+		$uid = I("request.uid");
+		$email = I("request.email");
+		$token = I("request.token");
+		if (!IS_POST) {
+			$ret = D("User")->checkEmailVerfiy($uid,$email,$token);
+			if ($ret) {
+				if( $ret['email_actived'] != 1) {
+					$this->message(L('email_does_not_exist'));
+					return;
+				}
+				$cookie_token_expire = $ret['cookie_token_expire'];
+				if( (strtotime($cookie_token_expire) - time() ) <=  (48*3600) ) {
+					$this->display();
+				} else {
+					$this->message(L('url_had_expired'));
+				}
+			}else{	
+				$this->message(L('url_had_expired'));
+			}
+		} else {
+			$password = I("request.password");
+			$ret = D("User")->checkEmailVerfiy($uid,$email,$token);
+			if ($ret) {
+				$cookie_token_expire = $ret['cookie_token_expire'];
+				if( (strtotime($cookie_token_expire) - time() ) <=  (48*3600) ) {
+					$ret = D("User")->resetPwd($uid,$password);
+					if( $ret ){
+						$this->message(L('modify_succeeded'),U("Home/user/login"));
+					} else {
+						$this->message('修改失败');
+					}
+				} else {
+					$this->message(L('url_had_expired'));
+				}
+			}else{	
+				$this->message(L('url_had_expired'));
+			}
 		}
 	}
 

@@ -1,0 +1,24 @@
+<include file="Common/header" />
+<link rel="stylesheet" href="__PUBLIC__/css/login.css" />
+
+    <div class="container">
+        <div class="main-box" style="margin:0 auto ;width:50%;">
+            <ul class="nav nav-pills ">
+                <li ><a href="?s=home/user/updatepwd">修改密码</a></li>
+                <li class="active"><a href="#tab1" data-toggle="tab2">我的邮箱</a></li>
+                <li class="pull-right"> <a href="?s=/home/item/index">返回</a></li>
+            </ul>
+              <form class="form-signin" method="post">
+                <h3 class="form-signin-heading">{$Think.Lang.update_personal_email}</h3>
+                <input type="password" class="input-block-level" name="new_password"  placeholder="{$Think.Lang.bind_email_description}">
+                <input type="password" class="input-block-level" name="password"  placeholder="{$Think.Lang.password_description}">
+                <button class="btn  btn-primary" type="submit">{$Think.Lang.update_personal_email_submit}</button>
+                <br>
+                <br>
+                <div><a href="?s=/home/user/verifyEmail">没收到验证邮件？再发一封</a></div>
+              </form>
+        </div><!-- /main-box -->
+    </div> <!-- /container -->
+
+ <include file="Common/footer" />
+
