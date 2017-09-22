@@ -65,9 +65,6 @@ class UserController extends BaseController {
 		                D("User")->setEmailVerify($email,$token,$token_expire);		                
 		                $url =U("user/resetpasswordbyurl?uid={$email_info['uid']}&email={$email}&token={$token}",'',true,true);
 		                $content = $this->genEmail($email_info['username'],$url);
-		                //$this->message($content);
-		                //return;
-		                //$content = "http://doc.study365.org/index.php?s=home/user/resetpasswordbyurl&uid={$email_info['uid']}&email={$email}&token={$token}";
 		                $status = think_send_mail($email,'','密码找回',$content);
 		                if( true === $status ) {
 		                    $this->message('已成功发送重置密码邮件到您的邮箱中。请登录并查看邮件');
