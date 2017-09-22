@@ -1,3 +1,4 @@
 Application/Runtime/
 server/Application/Runtime/
 sftp-config.json
+Sqlite/showdoc.db.php
