@@ -305,7 +305,7 @@ class UserController extends BaseController {
 			    <span style="font-family: 宋体, SimSun;">亲爱的{$username}：</span>
 			</p>
 			<p style="text-indent: 2em;">
-			    <span style="font-family: 宋体, SimSun;">欢迎使用showdoc邮箱验证功能。请点击以下链接验证您的邮箱（链接48小时内有效，如无法点击，请复制链接到浏览器访问） ：</span>
+			    <span style="font-family: 宋体, SimSun;">欢迎使用showdoc邮箱验证功能。请点击以下链接验证您的邮箱（链接24小时内有效，如无法点击，请复制链接到浏览器访问） ：</span>
 			</p>
 			<p style="text-indent: 2em;">
 			    <a href="{$url}" target="_blank" style="font-family: 宋体, SimSun; text-decoration: underline;"><span style="font-family: 宋体, SimSun;">$url</span></a>
