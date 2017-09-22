@@ -62,8 +62,11 @@ class UserController extends BaseController {
 		                $str = $email.get_millisecond().get_rand_char(8);
 		                $token = sha256($str);
 		                $token_expire = date("Y-m-d H:i:s",strtotime('+1 days'));
-		                D("User")->setEmailVerify($email,$token,$token_expire);
-		                $content =U("user/resetpasswordbyurl?uid={$email_info['uid']}&email={$email}&token={$token}",'',true,true);
+		                D("User")->setEmailVerify($email,$token,$token_expire);		                
+		                $url =U("user/resetpasswordbyurl?uid={$email_info['uid']}&email={$email}&token={$token}",'',true,true);
+		                $content = $this->genEmail($email_info['username'],$url);
+		                //$this->message($content);
+		                //return;
 		                //$content = "http://doc.study365.org/index.php?s=home/user/resetpasswordbyurl&uid={$email_info['uid']}&email={$email}&token={$token}";
 		                $status = think_send_mail($email,'','密码找回',$content);
 		                if( true === $status ) {
@@ -296,5 +299,44 @@ class UserController extends BaseController {
 		cookie('cookie_token',NULL);
 		session(null);
 		$this->message(L('logout_succeeded'),U('Home/index/index'));
+	}
+
+	private function genEmail($username,$url){
+		$content = <<<EOF
+			<p>
+			    <span style="font-family: 宋体, SimSun;">亲爱的{$username}：</span>
+			</p>
+			<p style="text-indent: 2em;">
+			    <span style="font-family: 宋体, SimSun;">欢迎使用showdoc邮箱验证功能。请点击以下链接验证您的邮箱（链接48小时内有效，如无法点击，请复制链接到浏览器访问） ：</span>
+			</p>
+			<p style="text-indent: 2em;">
+			    <a href="{$url}" target="_blank" style="font-family: 宋体, SimSun; text-decoration: underline;"><span style="font-family: 宋体, SimSun;">$url</span></a>
+			</p>
+			<p>
+			    <br/>
+			</p>
+			<p>
+			    <span style="font-family: 宋体, SimSun;">如果您没有申请邮箱验证，请忽略此邮件。</span>
+			</p>
+			<p>
+			    <br/>
+			</p>
+			<p>
+			    <span style="font-family: 宋体, SimSun;">沙小僧</span>
+			</p>
+			<p>
+			    <span style="font-family: 宋体, SimSun;">2017-09-21</span>
+			</p>
+			<p>
+			    <br/>
+			</p>
+			<p>
+			    <span style="font-family: 宋体, SimSun;">（本邮件由系统自动发出，请勿回复。）</span>
+			</p>
+			<p>
+			    <br/>
+			</p>
+EOF;
+		return $content;
 	}
 }

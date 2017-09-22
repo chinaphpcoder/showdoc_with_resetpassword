@@ -1623,3 +1623,13 @@ function get_rand_char($length){
 
    return $str;
 }
+
+ function str_end_with($haystack, $needle) {
+
+      $length = strlen($needle);
+      if($length == 0)
+      {
+          return true;
+      }
+      return (substr($haystack, -$length) === $needle);
+ }

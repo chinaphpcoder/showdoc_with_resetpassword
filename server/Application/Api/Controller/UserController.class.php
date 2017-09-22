@@ -10,6 +10,15 @@ class UserController extends BaseController {
         $password = I("password");
         $confirm_password = I("confirm_password");
         $v_code = I("v_code");
+        if(!filter_var($username, FILTER_VALIDATE_EMAIL))
+        {
+            $this->sendError(10101,'邮箱格式不正确');
+            return;
+        }
+        if( !(str_end_with($username,'@shaxiaoseng.com')||str_end_with($username,'@email.shaxiaoseng.com')) ) {
+            $this->sendError(10101,'请使用沙小僧企业邮箱注册');
+            return;
+        }
         if (C('CloseVerify') || $v_code && $v_code == session('v_code') ) {
         if ( $password != '' && $password == $confirm_password) {
 
