@@ -176,7 +176,7 @@ return array(
     'verification_code'=>'验证码',
     'no_account'=>'注册新用户',  
     'register_new_account'=>'注册新用户',
-    'username_description'=>'用户名（可填英文昵称或邮箱）',
+    'username_description'=>'用户名（只可使用邮箱）',
     'remembered_password'=>'想起密码了？去登录→',    
     'password'=>'密码',
     'password_again'=>'再次输入密码',

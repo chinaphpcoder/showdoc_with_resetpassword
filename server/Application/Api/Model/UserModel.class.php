@@ -12,6 +12,10 @@ class UserModel extends BaseModel {
         return  $this->where("username = '%s'",array($username))->find();
     }
 
+    public function isExistUserOrEmail($username){
+        return  $this->where("username = '%s' or email = '%s'",array($username,$username))->find();
+    }
+
     /**
      * 用户名是否已经存在
      * 
@@ -31,6 +35,11 @@ class UserModel extends BaseModel {
     public function register($username,$password){
         $password = md5(base64_encode(md5($password)).'576hbgh6');
         return $this->add(array('username'=>$username ,'password'=>$password , 'reg_time'=>time()));
+    }
+
+    public function register2($username,$password){
+        $password = md5(base64_encode(md5($password)).'576hbgh6');
+        return $this->add(array('username'=>$username ,'password'=>$password ,'email'=>$username,'email_actived'=>1, 'reg_time'=>time()));
     }
 
     //修改用户密码

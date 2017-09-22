@@ -13,8 +13,8 @@ class UserController extends BaseController {
         if (C('CloseVerify') || $v_code && $v_code == session('v_code') ) {
         if ( $password != '' && $password == $confirm_password) {
 
-            if ( ! D("User")->isExist($username) ) {
-                $new_uid = D("User")->register($username,$password);
+            if ( ! D("User")->isExistUserOrEmail($username) ) {
+                $new_uid = D("User")->register2($username,$password);
                 if ($new_uid) {
                     //设置自动登录
                     $ret = D("User")->where("uid = '$new_uid' ")->find() ;
@@ -73,63 +73,6 @@ class UserController extends BaseController {
             $this->sendError($error_code,L('username_or_password_incorrect'));
             return;
         }
-        
-    }
-
-    //忘记密码
-    public function resetPassword(){
-        $email = I("email");
-        $v_code = I("v_code");
-        if (!$v_code || $v_code != session('v_code')) {
-            $this->sendError(10206,L('verification_code_are_incorrect'));
-            return;
-        }
-
-        $email_info = D("User")->isExistEMail($email);
-        if( $email_info ) {
-            if( $email_info['email_actived'] == 1) {
-                $str = $email.get_millisecond().get_rand_char(8);
-                $token = sha256($str);
-                $token_expire = date("Y-m-d H:i:s",strtotime('+1 days'));
-                D("User")->setEmailVerify($email,$token,$token_expire);
-                $content = "http://doc.study365.org/index.php?s=home/user/resetpasswordbyurl&uid={$email_info['uid']}&email={$email}&token={$token}";
-                $status = think_send_mail($email,'','密码找回',$content);
-                if( true === $status ) {
-                    $this->sendError(10101,'已成功发送重置密码邮件到您的邮箱中。请登录并查看邮件');
-                } else {
-                    $this->sendError(10101,L('email_send_error'));
-                }
-                
-                //var_dump($content);
-                //think_send_mail($email,'','密码找回',$content);
-                //$this->sendResult('已成功发送重置密码邮件到您的邮箱中。请登录并查看邮件');
-            } else {
-                $this->sendError(10101,L('email_does_not_exist'));
-            }
-        }else{
-            $this->sendError(10101,L('email_does_not_exist'));
-        }
-        
-
-
-        // if ( D("User")->isExistEMail($email) ) {
-        //     $new_uid = D("User")->register($username,$password);
-        //     if ($new_uid) {
-        //         //设置自动登录
-        //         $ret = D("User")->where("uid = '$new_uid' ")->find() ;
-        //         unset($ret['password']);
-        //         session("login_user" , $ret );
-        //         $token = D("UserToken")->createToken($ret['uid']);
-        //         cookie('cookie_token',$token,60*60*24*90);//此处由服务端控制token是否过期，所以cookies过期时间设置多久都无所谓
-
-        //       $this->sendResult(array()); 
-
-        //     }else{
-        //         $this->sendError(10101,L('username_or_password_incorrect'));
-        //     }
-        // }else{
-        //     $this->sendError(10101,L('email_does_not_exist'));
-        // }
         
     }
 }

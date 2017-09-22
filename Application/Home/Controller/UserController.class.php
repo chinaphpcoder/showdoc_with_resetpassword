@@ -20,12 +20,12 @@ class UserController extends BaseController {
 			  if (C('CloseVerify') || $v_code && $v_code == session('v_code') ) {
 		  		if ( $password != '' && $password == $confirm_password) {
 
-			  		if ( ! D("User")->isExist($username) ) {
-						$ret = D("User")->register($username,$password);
+			  		if ( ! D("User")->isExistUserOrEmail($username) ) {
+						$ret = D("User")->register2($username,$password);
 						if ($ret) {
-					      $this->message(L('register_succeeded'),U('Home/User/login'));					    
+					    	$this->message(L('register_succeeded'),U('Home/User/login'));					    
 						}else{
-						  $this->message('register fail');
+							$this->message('register fail');
 						}
 			  		}else{
 			  			$this->message(L('username_exists'));
