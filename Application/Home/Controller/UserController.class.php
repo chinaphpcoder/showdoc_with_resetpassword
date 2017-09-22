@@ -299,6 +299,7 @@ class UserController extends BaseController {
 	}
 
 	private function genEmail($username,$url){
+		$date=date("Y-m-d");
 		$content = <<<EOF
 			<p>
 			    <span style="font-family: 宋体, SimSun;">亲爱的{$username}：</span>
@@ -322,7 +323,7 @@ class UserController extends BaseController {
 			    <span style="font-family: 宋体, SimSun;">沙小僧</span>
 			</p>
 			<p>
-			    <span style="font-family: 宋体, SimSun;">2017-09-21</span>
+			    <span style="font-family: 宋体, SimSun;">{$date}</span>
 			</p>
 			<p>
 			    <br/>
