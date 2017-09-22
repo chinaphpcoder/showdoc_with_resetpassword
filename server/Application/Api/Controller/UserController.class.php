@@ -81,9 +81,7 @@ class UserController extends BaseController {
         $email = I("email");
         $v_code = I("v_code");
         if (!$v_code || $v_code != session('v_code')) {
-            //echo $v_code;
-            $this->sendError(10206,$v_code."|".session('v_code'));
-            //$this->sendError(10206,L('verification_code_are_incorrect111'));
+            $this->sendError(10206,L('verification_code_are_incorrect'));
             return;
         }
 
@@ -92,9 +90,19 @@ class UserController extends BaseController {
             if( $email_info['email_actived'] == 1) {
                 $str = $email.get_millisecond().get_rand_char(8);
                 $token = sha256($str);
-                $token_expire = date("Y-m-d H:i:s",strtotime('+2 days'));
+                $token_expire = date("Y-m-d H:i:s",strtotime('+1 days'));
                 D("User")->setEmailVerify($email,$token,$token_expire);
-                $this->sendResult('已成功发送重置密码邮件到您的邮箱中。请登录并查看邮件');
+                $content = "http://doc.study365.org/index.php?s=home/user/resetpasswordbyurl&uid={$email_info['uid']}&email={$email}&token={$token}";
+                $status = think_send_mail($email,'','密码找回',$content);
+                if( true === $status ) {
+                    $this->sendError(10101,'已成功发送重置密码邮件到您的邮箱中。请登录并查看邮件');
+                } else {
+                    $this->sendError(10101,L('email_send_error'));
+                }
+                
+                //var_dump($content);
+                //think_send_mail($email,'','密码找回',$content);
+                //$this->sendResult('已成功发送重置密码邮件到您的邮箱中。请登录并查看邮件');
             } else {
                 $this->sendError(10101,L('email_does_not_exist'));
             }

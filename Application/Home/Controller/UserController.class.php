@@ -4,8 +4,7 @@ use Think\Controller;
 class UserController extends BaseController {
 
 	public function sendmail(){
-		$status = think_send_mail('xu.shuai@shaxiaoseng.com','徐帅','密码找回测试','这里是内容');
-		var_dump($status);
+		echo U('user/resetpasswordbyurl?url=22','',true,true);
 	}
 
 	//注册
@@ -44,35 +43,40 @@ class UserController extends BaseController {
 
 	public function resetPassword(){
 		if (!IS_POST) {
-			  $this->assign('CloseVerify',C('CloseVerify'));
-			  $this->display ();
+				$this->display ();
 			}else{
-			  $username = I("username");
-			  $password = I("password");
-			  $confirm_password = I("confirm_password");
-			  $v_code = I("v_code");
-			  if (C('CloseVerify') || $v_code && $v_code == session('v_code') ) {
-		  		if ( $password != '' && $password == $confirm_password) {
+				$email = I("email");
+		        $v_code = I("v_code");
+		        if( null == $email ) {
+		        	$this->message('请输入邮箱');
+		            return;
+		        }
+		        if (!$v_code || $v_code != session('v_code')) {
+		            $this->message(L('verification_code_are_incorrect'));
+		            return;
+		        }
 
-			  		if ( ! D("User")->isExist($username) ) {
-						$ret = D("User")->register($username,$password);
-						if ($ret) {
-					      $this->message(L('register_succeeded'),U('Home/User/login'));					    
-						}else{
-						  $this->message('register fail');
-						}
-			  		}else{
-			  			$this->message(L('username_exists'));
-			  		}
-
-			  	}else{
-			  		$this->message(L('code_much_the_same'));
-			  	}
-			  }else{
-				    $this->message(L('verification_code_are_incorrect'));
-			  }
-			  
-
+		        $email_info = D("User")->isExistEMail($email);
+		        if( $email_info ) {
+		            if( $email_info['email_actived'] == 1) {
+		                $str = $email.get_millisecond().get_rand_char(8);
+		                $token = sha256($str);
+		                $token_expire = date("Y-m-d H:i:s",strtotime('+1 days'));
+		                D("User")->setEmailVerify($email,$token,$token_expire);
+		                $content =U("user/resetpasswordbyurl?uid={$email_info['uid']}&email={$email}&token={$token}",'',true,true);
+		                //$content = "http://doc.study365.org/index.php?s=home/user/resetpasswordbyurl&uid={$email_info['uid']}&email={$email}&token={$token}";
+		                $status = think_send_mail($email,'','密码找回',$content);
+		                if( true === $status ) {
+		                    $this->message('已成功发送重置密码邮件到您的邮箱中。请登录并查看邮件');
+		                } else {
+		                    $this->message(L('email_send_error'));
+		                }
+		            } else {
+		                $this->message(L('email_does_not_exist'));
+		            }
+		        }else{
+		            $this->message(L('email_does_not_exist'));
+		        }		  
 			}
 	}
 

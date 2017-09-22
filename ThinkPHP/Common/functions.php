@@ -1552,8 +1552,6 @@ function in_array_case($value,$array){
 
 function think_send_mail($to, $name, $subject = '', $body = '', $attachment = null) {
     $config = C('THINK_EMAIL');//提取上面的配置
-    var_dump($config);
-    //vendor('PHPMailer.PHPMailer'); //从PHPMailer目录导class.phpmailer.php类文件，vendor是thinkphp中引用扩展的//方法
 
     $mail = new Vendor\PHPMailer\PHPMailer(); //PHPMailer对象
     $mail->CharSet = 'UTF-8'; //设定邮件编码，默认ISO-8859-1，如果发中文此项必须设置，否则乱码
@@ -1596,4 +1594,32 @@ function think_send_mail($to, $name, $subject = '', $body = '', $attachment = nu
     $return_info = $mail->Send() ? true : $mail->ErrorInfo;
     //echo $return_info;
     return $return_info;
+}
+
+function sha256($str){
+    $re=hash('sha256', $str, true);
+    return bin2hex($re);
+}
+
+function get_millisecond($mtime=null) {
+    if( 13 == strlen($mtime) ) {
+        return $mtime;
+    } elseif ( strlen($time) == 10 ) {
+        return $time."000";
+    } else {
+        list($t1, $t2) = explode(' ', microtime());
+        return $t2.sprintf("%03d",ceil( ($t1 * 1000)) );
+    }
+}
+
+function get_rand_char($length){
+   $str = null;
+   $strPol = "123456789abcdefghijklmnopqrstuvwxyz";
+   $max = strlen($strPol)-1;
+
+   for($i=0;$i<$length;$i++){
+    $str.=$strPol[rand(0,$max)];//rand($min,$max)生成介于min和max两个数之间的一个随机整数
+   }
+
+   return $str;
 }

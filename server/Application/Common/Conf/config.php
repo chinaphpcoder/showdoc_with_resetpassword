@@ -9,9 +9,10 @@ return array(
         'SMTP_PASS'   => 'php@5168', //SMTP服务器密码
         'FROM_EMAIL'  => 'admin@shaxiaoseng.com', //发件人EMAIL
         'FROM_NAME'   => '沙小僧', //发件人名称
-        //'REPLY_EMAIL' => '', //回复EMAIL（留空则为发件人EMAIL）
-        //'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
-     ),
+        'REPLY_EMAIL' => '', //回复EMAIL（留空则为发件人EMAIL）
+        'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
+        'ENCRYPTION'  => 'ssl',
+    ), 
     //'配置项'=>'配置值'
     //使用sqlite数据库
     'DB_TYPE'   => 'Sqlite', 

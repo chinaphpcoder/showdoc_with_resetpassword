@@ -220,5 +220,8 @@ return array(
     
     "default_title" =>'默认页面',
 
+    'email_send_error'=>'邮件发送失败',
+    'reset_password_submit_succeeded'=>'已成功发送重置密码邮件到您的邮箱中。请登录并查看邮件',
+
 
 );

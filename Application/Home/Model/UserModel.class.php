@@ -12,6 +12,13 @@ class UserModel extends BaseModel {
         return  $this->where("username = '%s'",array($username))->find();
     }
 
+    public function isExistEMail($email){
+        return  $this->where("email = '%s'",array($email))->find();
+    }
+    
+    public function setEmailVerify($email,$cookie_token,$cookie_token_expire){
+        return $this->where("email ='%s' ",array($email))->save(array('cookie_token'=>$cookie_token,'cookie_token_expire'=>$cookie_token_expire));
+    }
     /**
      * 注册新用户
      * 
