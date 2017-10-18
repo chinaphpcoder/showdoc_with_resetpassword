@@ -2,7 +2,7 @@
 return array(
     //'配置项'=>'配置值'
     //使用sqlite数据库
-    'SHOW_PAGE_TRACE' => true,
+    'SHOW_PAGE_TRACE' => false,
     'THINK_EMAIL' => array(
         'SMTP_HOST'   => 'smtp.mxhichina.com', //SMTP服务器
         'SMTP_PORT'   => '465', //SMTP服务器端口

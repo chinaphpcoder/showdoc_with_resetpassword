@@ -15,8 +15,8 @@ class UserController extends BaseController {
             $this->sendError(10101,'邮箱格式不正确');
             return;
         }
-        if( !(str_end_with($username,'@shaxiaoseng.com')||str_end_with($username,'@email.shaxiaoseng.com')) ) {
-            $this->sendError(10101,'请使用沙小僧企业邮箱注册');
+        if( !(str_end_with($username,'@shaxiaoseng.cn')) ) {
+            $this->sendError(10101,'请使用沙小僧企业邮箱(CN)注册');
             return;
         }
         if (C('CloseVerify') || $v_code && $v_code == session('v_code') ) {
